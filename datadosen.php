@@ -1,9 +1,6 @@
 <?php
-// Include file konfigurasi database
 include 'config.php';
-
-// Fungsi untuk menambahkan data dosen
-function tambahDosen($conn, $nama, $nidn, $jenjangPendidikan)
+function addDosen($conn, $nama, $nidn, $jenjangPendidikan)
 {
     $sql = "INSERT INTO Dosen (Nama, NIDN, JenjangPendidikan) VALUES ('$nama', '$nidn', '$jenjangPendidikan')";
     if (mysqli_query($conn, $sql)) {
@@ -14,8 +11,7 @@ function tambahDosen($conn, $nama, $nidn, $jenjangPendidikan)
     }
 }
 
-// Fungsi untuk mengambil semua data dosen
-function ambilSemuaDosen($conn)
+function getAllDosen($conn)
 {
     $sql = "SELECT * FROM Dosen";
     $result = mysqli_query($conn, $sql);
@@ -30,8 +26,7 @@ function ambilSemuaDosen($conn)
     return $dosen;
 }
 
-// Fungsi untuk mengambil data dosen berdasarkan ID
-function ambilDosenByID($conn, $id)
+function getDosenByID($conn, $id)
 {
     $sql = "SELECT * FROM Dosen WHERE ID=$id";
     $result = mysqli_query($conn, $sql);
@@ -44,8 +39,7 @@ function ambilDosenByID($conn, $id)
     }
 }
 
-// Fungsi untuk memperbarui data dosen
-function perbaruiDosen($conn, $id, $nama, $nidn, $jenjangPendidikan)
+function updateDosen($conn, $id, $nama, $nidn, $jenjangPendidikan)
 {
     $sql = "UPDATE Dosen SET Nama='$nama', NIDN='$nidn', JenjangPendidikan='$jenjangPendidikan' WHERE ID=$id";
     if (mysqli_query($conn, $sql)) {
@@ -56,8 +50,7 @@ function perbaruiDosen($conn, $id, $nama, $nidn, $jenjangPendidikan)
     }
 }
 
-// Fungsi untuk menghapus data dosen berdasarkan ID
-function hapusDosen($conn, $id)
+function deleteDosen($conn, $id)
 {
     $sql = "DELETE FROM Dosen WHERE ID=$id";
     if (mysqli_query($conn, $sql)) {
@@ -68,40 +61,36 @@ function hapusDosen($conn, $id)
     }
 }
 
-// Proses tambah data dosen
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tambah"])) {
     $nama = $_POST["nama"];
     $nidn = $_POST["nidn"];
     $jenjangPendidikan = $_POST["jenjangPendidikan"];
 
-    if (tambahDosen($conn, $nama, $nidn, $jenjangPendidikan)) {
+    if (addDosen($conn, $nama, $nidn, $jenjangPendidikan)) {
         echo "Data dosen berhasil ditambahkan.";
     }
 }
 
-// Proses perbarui data dosen
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["perbarui"])) {
     $id = $_POST["id"];
     $nama = $_POST["nama"];
     $nidn = $_POST["nidn"];
     $jenjangPendidikan = $_POST["jenjangPendidikan"];
 
-    if (perbaruiDosen($conn, $id, $nama, $nidn, $jenjangPendidikan)) {
+    if (updateDosen($conn, $id, $nama, $nidn, $jenjangPendidikan)) {
         echo "Data dosen berhasil diperbarui.";
     }
 }
 
-// Proses hapus data dosen
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["hapus"])) {
     $id = $_POST["id"];
 
-    if (hapusDosen($conn, $id)) {
+    if (deleteDosen($conn, $id)) {
         echo "Data dosen berhasil dihapus.";
     }
 }
 
-// Ambil semua data dosen
-$dosen = ambilSemuaDosen($conn);
+$dosen = getAllDosen($conn);
 ?>
 
 <!DOCTYPE html>
@@ -115,7 +104,6 @@ $dosen = ambilSemuaDosen($conn);
 <body>
     <h2>CRUD Dosen</h2>
 
-    <!-- Form tambah dosen -->
     <h3>Tambah Dosen</h3>
     <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
         <input type="text" name="nama" placeholder="Nama Dosen" required><br>
@@ -127,7 +115,6 @@ $dosen = ambilSemuaDosen($conn);
         <input type="submit" name="tambah" value="Tambah">
     </form>
 
-    <!-- Tabel data dosen -->
     <h3>Data Dosen</h3>
     <?php if (count($dosen) > 0) : ?>
         <table>
@@ -158,11 +145,10 @@ $dosen = ambilSemuaDosen($conn);
         <p>Tidak ada data dosen.</p>
     <?php endif; ?>
 
-    <!-- Form edit dosen -->
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edit"])) : ?>
         <?php
         $id = $_POST["id"];
-        $dosen = ambilDosenByID($conn, $id);
+        $dosen = getDosenByID($conn, $id);
 
         if ($dosen !== false) :
         ?>
