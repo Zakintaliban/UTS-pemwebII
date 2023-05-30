@@ -1,0 +1,21 @@
+body {
+  background-color: #f2f2f2;
+  color: #333333;
+  font-family: "Helvetica Neue", sans-serif;
+  text-align: center;
+}
+
+h1 {
+  color: #009933;
+}
+
+.profile {
+  margin: 20px;
+  text-align: center;
+}
+
+.profile img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
