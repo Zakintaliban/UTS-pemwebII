@@ -15,13 +15,13 @@
 
     <h1>SIAKAD - Sistem Informasi Akademik</h1>
     <h2>Matakuliah</h2>
-    <a href="crud_matakuliah.php">Kelola Data Matakuliah</a>
+    <a href="datamatakuliah.php">Kelola Data Matakuliah</a>
 
     <h2>Dosen</h2>
-    <a href="crud_dosen.php">Kelola Data Dosen</a>
+    <a href="datadosen.php">Kelola Data Dosen</a>
 
     <h2>Mahasiswa</h2>
-    <a href="crud_mahasiswa.php">Kelola Data Mahasiswa</a>
+    <a href="datamahasiswa.php">Kelola Data Mahasiswa</a>
 </body>
 
 </html>
