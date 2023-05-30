@@ -1,9 +1,7 @@
 <?php
-// Include file konfigurasi database
 include 'config.php';
 
-// Fungsi untuk menambahkan data matakuliah
-function tambahMatakuliah($conn, $nama, $kodeMatakuliah, $deskripsi)
+function addMatakuliah($conn, $nama, $kodeMatakuliah, $deskripsi)
 {
     $sql = "INSERT INTO Matakuliah (Nama, KodeMatakuliah, Deskripsi) VALUES ('$nama', '$kodeMatakuliah', '$deskripsi')";
     if (mysqli_query($conn, $sql)) {
@@ -14,8 +12,7 @@ function tambahMatakuliah($conn, $nama, $kodeMatakuliah, $deskripsi)
     }
 }
 
-// Fungsi untuk mengambil semua data matakuliah
-function ambilSemuaMatakuliah($conn)
+function getAllMatakuliah($conn)
 {
     $sql = "SELECT * FROM Matakuliah";
     $result = mysqli_query($conn, $sql);
@@ -30,8 +27,7 @@ function ambilSemuaMatakuliah($conn)
     return $matakuliah;
 }
 
-// Fungsi untuk mengambil data matakuliah berdasarkan ID
-function ambilMatakuliahByID($conn, $id)
+function getMatakuliahByID($conn, $id)
 {
     $sql = "SELECT * FROM Matakuliah WHERE ID=$id";
     $result = mysqli_query($conn, $sql);
@@ -44,8 +40,7 @@ function ambilMatakuliahByID($conn, $id)
     }
 }
 
-// Fungsi untuk memperbarui data matakuliah
-function perbaruiMatakuliah($conn, $id, $nama, $kodeMatakuliah, $deskripsi)
+function updateMatakuliah($conn, $id, $nama, $kodeMatakuliah, $deskripsi)
 {
     $sql = "UPDATE Matakuliah SET Nama='$nama', KodeMatakuliah='$kodeMatakuliah', Deskripsi='$deskripsi' WHERE ID=$id";
     if (mysqli_query($conn, $sql)) {
@@ -56,8 +51,7 @@ function perbaruiMatakuliah($conn, $id, $nama, $kodeMatakuliah, $deskripsi)
     }
 }
 
-// Fungsi untuk menghapus data matakuliah berdasarkan ID
-function hapusMatakuliah($conn, $id)
+function deleteMatakuliah($conn, $id)
 {
     $sql = "DELETE FROM Matakuliah WHERE ID=$id";
     if (mysqli_query($conn, $sql)) {
@@ -68,40 +62,36 @@ function hapusMatakuliah($conn, $id)
     }
 }
 
-// Proses tambah data matakuliah
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tambah"])) {
     $nama = $_POST["nama"];
     $kodeMatakuliah = $_POST["kodeMatakuliah"];
     $deskripsi = $_POST["deskripsi"];
 
-    if (tambahMatakuliah($conn, $nama, $kodeMatakuliah, $deskripsi)) {
+    if (addMatakuliah($conn, $nama, $kodeMatakuliah, $deskripsi)) {
         echo "Data matakuliah berhasil ditambahkan.";
     }
 }
 
-// Proses perbarui data matakuliah
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["perbarui"])) {
     $id = $_POST["id"];
     $nama = $_POST["nama"];
     $kodeMatakuliah = $_POST["kodeMatakuliah"];
     $deskripsi = $_POST["deskripsi"];
 
-    if (perbaruiMatakuliah($conn, $id, $nama, $kodeMatakuliah, $deskripsi)) {
+    if (updateMatakuliah($conn, $id, $nama, $kodeMatakuliah, $deskripsi)) {
         echo "Data matakuliah berhasil diperbarui.";
     }
 }
 
-// Proses hapus data matakuliah
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["hapus"])) {
     $id = $_POST["id"];
 
-    if (hapusMatakuliah($conn, $id)) {
+    if (deleteMatakuliah($conn, $id)) {
         echo "Data matakuliah berhasil dihapus.";
     }
 }
 
-// Ambil semua data matakuliah
-$matakuliah = ambilSemuaMatakuliah($conn);
+$matakuliah = getAllMatakuliah($conn);
 ?>
 
 <!DOCTYPE html>
@@ -115,7 +105,6 @@ $matakuliah = ambilSemuaMatakuliah($conn);
 <body>
     <h2>CRUD Matakuliah</h2>
 
-    <!-- Form tambah matakuliah -->
     <h3>Tambah Matakuliah</h3>
     <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
         <input type="text" name="nama" placeholder="Nama Matakuliah" required><br>
@@ -124,7 +113,6 @@ $matakuliah = ambilSemuaMatakuliah($conn);
         <input type="submit" name="tambah" value="Tambah">
     </form>
 
-    <!-- Tabel data matakuliah -->
     <h3>Data Matakuliah</h3>
     <?php if (count($matakuliah) > 0) : ?>
         <table>
@@ -155,11 +143,10 @@ $matakuliah = ambilSemuaMatakuliah($conn);
         <p>Tidak ada data matakuliah.</p>
     <?php endif; ?>
 
-    <!-- Form edit matakuliah -->
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edit"])) : ?>
         <?php
         $id = $_POST["id"];
-        $matakuliah = ambilMatakuliahByID($conn, $id);
+        $matakuliah = getMatakuliahByID($conn, $id);
 
         if ($matakuliah !== false) :
         ?>
