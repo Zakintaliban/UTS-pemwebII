@@ -1,9 +1,7 @@
 <?php
-// Include file konfigurasi database
 include 'config.php';
 
-// Fungsi untuk menambahkan data mahasiswa
-function tambahMahasiswa($conn, $nama, $nim, $programStudi)
+function addMahasiswa($conn, $nama, $nim, $programStudi)
 {
     $sql = "INSERT INTO Mahasiswa (Nama, NIM, ProgramStudi) VALUES ('$nama', '$nim', '$programStudi')";
     if (mysqli_query($conn, $sql)) {
@@ -14,8 +12,7 @@ function tambahMahasiswa($conn, $nama, $nim, $programStudi)
     }
 }
 
-// Fungsi untuk mengambil semua data mahasiswa
-function ambilSemuaMahasiswa($conn)
+function getAllMahasiswa($conn)
 {
     $sql = "SELECT * FROM Mahasiswa";
     $result = mysqli_query($conn, $sql);
@@ -30,8 +27,7 @@ function ambilSemuaMahasiswa($conn)
     return $mahasiswa;
 }
 
-// Fungsi untuk mengambil data mahasiswa berdasarkan ID
-function ambilMahasiswaByID($conn, $id)
+function getMahasiswaByID($conn, $id)
 {
     $sql = "SELECT * FROM Mahasiswa WHERE ID=$id";
     $result = mysqli_query($conn, $sql);
@@ -44,8 +40,7 @@ function ambilMahasiswaByID($conn, $id)
     }
 }
 
-// Fungsi untuk memperbarui data mahasiswa
-function perbaruiMahasiswa($conn, $id, $nama, $nim, $programStudi)
+function updateMahasiswa($conn, $id, $nama, $nim, $programStudi)
 {
     $sql = "UPDATE Mahasiswa SET Nama='$nama', NIM='$nim', ProgramStudi='$programStudi' WHERE ID=$id";
     if (mysqli_query($conn, $sql)) {
@@ -56,8 +51,7 @@ function perbaruiMahasiswa($conn, $id, $nama, $nim, $programStudi)
     }
 }
 
-// Fungsi untuk menghapus data mahasiswa berdasarkan ID
-function hapusMahasiswa($conn, $id)
+function deleteMahasiswa($conn, $id)
 {
     $sql = "DELETE FROM Mahasiswa WHERE ID=$id";
     if (mysqli_query($conn, $sql)) {
@@ -68,40 +62,36 @@ function hapusMahasiswa($conn, $id)
     }
 }
 
-// Proses tambah data mahasiswa
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["tambah"])) {
     $nama = $_POST["nama"];
     $nim = $_POST["nim"];
     $programStudi = $_POST["programStudi"];
 
-    if (tambahMahasiswa($conn, $nama, $nim, $programStudi)) {
+    if (addMahasiswa($conn, $nama, $nim, $programStudi)) {
         echo "Data mahasiswa berhasil ditambahkan.";
     }
 }
 
-// Proses perbarui data mahasiswa
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["perbarui"])) {
     $id = $_POST["id"];
     $nama = $_POST["nama"];
     $nim = $_POST["nim"];
     $programStudi = $_POST["programStudi"];
 
-    if (perbaruiMahasiswa($conn, $id, $nama, $nim, $programStudi)) {
+    if (updateMahasiswa($conn, $id, $nama, $nim, $programStudi)) {
         echo "Data mahasiswa berhasil diperbarui.";
     }
 }
 
-// Proses hapus data mahasiswa
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["hapus"])) {
     $id = $_POST["id"];
 
-    if (hapusMahasiswa($conn, $id)) {
+    if (deleteMahasiswa($conn, $id)) {
         echo "Data mahasiswa berhasil dihapus.";
     }
 }
 
-// Ambil semua data mahasiswa
-$mahasiswa = ambilSemuaMahasiswa($conn);
+$mahasiswa = getAllMahasiswa($conn);
 ?>
 
 <!DOCTYPE html>
@@ -115,7 +105,6 @@ $mahasiswa = ambilSemuaMahasiswa($conn);
 <body>
     <h2>CRUD Mahasiswa</h2>
 
-    <!-- Form tambah mahasiswa -->
     <h3>Tambah Mahasiswa</h3>
     <form method="POST" action="<?php echo $_SERVER["PHP_SELF"]; ?>">
         <input type="text" name="nama" placeholder="Nama Mahasiswa" required><br>
@@ -124,7 +113,6 @@ $mahasiswa = ambilSemuaMahasiswa($conn);
         <input type="submit" name="tambah" value="Tambah">
     </form>
 
-    <!-- Tabel data mahasiswa -->
     <h3>Data Mahasiswa</h3>
     <?php if (count($mahasiswa) > 0) : ?>
         <table>
@@ -155,11 +143,10 @@ $mahasiswa = ambilSemuaMahasiswa($conn);
         <p>Tidak ada data mahasiswa.</p>
     <?php endif; ?>
 
-    <!-- Form edit mahasiswa -->
     <?php if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["edit"])) : ?>
         <?php
         $id = $_POST["id"];
-        $mahasiswa = ambilMahasiswaByID($conn, $id);
+        $mahasiswa = getMahasiswaByID($conn, $id);
 
         if ($mahasiswa !== false) :
         ?>
