@@ -6,6 +6,17 @@ body {
   font-family: "Helvetica Neue", sans-serif;
 }
 
+.profile {
+  margin: 20px;
+  text-align: center;
+}
+
+.profile img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+}
+
 h1 {
   color: #009933;
 }
