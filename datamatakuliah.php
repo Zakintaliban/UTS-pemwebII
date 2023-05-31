@@ -99,7 +99,7 @@ $matakuliah = getAllMatakuliah($conn);
 
 <head>
     <title>CRUD Matakuliah</title>
-    <link rel="stylesheet" type="text/css" href="style-crud.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>

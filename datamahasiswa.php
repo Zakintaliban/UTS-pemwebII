@@ -99,7 +99,7 @@ $mahasiswa = getAllMahasiswa($conn);
 
 <head>
     <title>CRUD Mahasiswa</title>
-    <link rel="stylesheet" type="text/css" href="style-crud.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>

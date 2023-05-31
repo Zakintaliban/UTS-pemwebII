@@ -98,7 +98,7 @@ $dosen = getAllDosen($conn);
 
 <head>
     <title>CRUD Dosen</title>
-    <link rel="stylesheet" type="text/css" href="style-crud.css">
+    <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 
 <body>
